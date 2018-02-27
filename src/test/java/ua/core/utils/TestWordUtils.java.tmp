@@ -1,0 +1,85 @@
+package ua.core.utils;
+
+import java.util.Arrays;
+import java.util.List;
+
+import org.junit.*;
+
+
+import ua.test.utils.TestUtils;
+
+/*
+
+TestSplitWord
+
+opts: NoDefaultConst, FullConst
+
+testString	String
+expected	String[]
+
+*/
+
+
+public class TestWordUtils {
+	
+	public class TestSplitWord {
+
+	    private String testString;
+	    private String[] expected;
+
+	    public TestSplitWord(String testString, String[] expected) {
+	        this.testString = testString;
+	        this.expected = expected;
+	    }
+
+	    public String getTestString() {
+	        return testString;
+	    }
+
+	    public List<String> getExpected() {
+	        return Arrays.asList (expected);
+	    }
+	}
+	
+	TestSplitWord word = new TestSplitWord ("word", new String[] {"word"});
+	
+	TestSplitWord[] testSplitWords = {
+		new TestSplitWord (null,            new String[] {}),
+		new TestSplitWord ("",              new String[] {}),
+		new TestSplitWord ("one",           new String[] {"one"}),
+		new TestSplitWord ("One",           new String[] {"One"}),
+		new TestSplitWord ("ONE",           new String[] {"ONE"}),
+		// new TestSplitWord ("_one_",         new String[] {"_one_"}),
+		// new TestSplitWord ("_One_",         new String[] {"_One_"}),
+		// new TestSplitWord ("_ONE_",         new String[] {"_ONE_"}),
+		// new TestSplitWord ("__one__",       new String[] {"__one__"}),
+		new TestSplitWord ("twoWords",      new String[] {"two", "Words"}),
+		new TestSplitWord ("TwoWords",      new String[] {"Two", "Words"}),
+		new TestSplitWord ("TWOWords",      new String[] {"TWO", "Words"}),
+		new TestSplitWord ("twoWORDS",      new String[] {"two", "WORDS"}),
+		new TestSplitWord ("two_words",     new String[] {"two", "words"}),
+		new TestSplitWord ("two_Words",     new String[] {"two", "Words"}),
+		new TestSplitWord ("Two_Words",     new String[] {"Two", "Words"}),
+		new TestSplitWord ("two_WORDS",     new String[] {"two", "WORDS"}),
+		new TestSplitWord ("TWO_words",     new String[] {"TWO", "words"}),
+		new TestSplitWord ("TWO_WORDS",     new String[] {"TWO", "WORDS"}),
+		new TestSplitWord ("oneTwoThree",   new String[] {"one", "Two", "Three"})
+	};
+	
+
+	@Test
+	public void testSplitWordAll() {
+		
+		for (TestSplitWord testItem : testSplitWords) {
+			callAndTestSplitWord (testItem);
+		}
+	}
+	
+	
+	private void callAndTestSplitWord (TestSplitWord testSplitWord) {
+		
+		List<String> actual = WordUtils.splitWord (testSplitWord.getTestString());
+		TestUtils.testEquals (testSplitWord.getExpected(), actual);
+	}
+
+}
