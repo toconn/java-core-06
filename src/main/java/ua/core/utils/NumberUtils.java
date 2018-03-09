@@ -1,6 +1,7 @@
 package ua.core.utils;
 
 import java.math.BigDecimal;
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -8,6 +9,9 @@ import java.util.regex.Pattern;
 
 public class NumberUtils {
 	
+	private static final DecimalFormat COMMA_SEPARATED_DECIMAL_FORMAT	= new DecimalFormat ("#,###,###,###,###,##0.0");
+	private static final DecimalFormat COMMA_SEPARATED_INTEGER_FORMAT	= new DecimalFormat ("#,###,###,###,###,##0");
+
 	private static final Pattern INTEGER_PATTERN = Pattern.compile ("[0-9]*");
 
 	
@@ -172,7 +176,6 @@ public class NumberUtils {
 		}
 	}
 	
-	
 	/**
 	 * Strips all non digits from the number and returns remainder.
 	 * 
@@ -193,7 +196,6 @@ public class NumberUtils {
 		}
 	}
 	
-	
 	public static String toString (Double value) {
 		
 		if (value != null) {
@@ -206,7 +208,6 @@ public class NumberUtils {
 		}
 	}
 	
-	
 	public static String toString (Long value) {
 		
 		if (value != null) {
@@ -217,6 +218,46 @@ public class NumberUtils {
 			
 			return "0";
 		}
+	}
+	
+	public static String toStringCommaSeparatedDecimalOne (Double value) {
+		
+		return COMMA_SEPARATED_DECIMAL_FORMAT.format (value);
+	}
+	
+	public static String toStringCommaSeparatedDecimalOne (float value) {
+		
+		return COMMA_SEPARATED_DECIMAL_FORMAT.format (value);
+	}
+	
+	public static String toStringCommaSeparatedDecimalOne (int value) {
+		
+		return COMMA_SEPARATED_DECIMAL_FORMAT.format (value);
+	}
+	
+	public static String toStringCommaSeparatedDecimalOne (long value) {
+		
+		return COMMA_SEPARATED_DECIMAL_FORMAT.format (value);
+	}
+	
+	public static String toStringCommaSeparatedInt (Double value) {
+		
+		return COMMA_SEPARATED_INTEGER_FORMAT.format (value);
+	}
+	
+	public static String toStringCommaSeparatedInt (float value) {
+		
+		return COMMA_SEPARATED_INTEGER_FORMAT.format (value);
+	}
+	
+	public static String toStringCommaSeparatedInt (int value) {
+		
+		return COMMA_SEPARATED_INTEGER_FORMAT.format (value);
+	}
+	
+	public static String toStringCommaSeparatedInt (long value) {
+		
+		return COMMA_SEPARATED_INTEGER_FORMAT.format (value);
 	}
 	
 	/**
@@ -231,6 +272,24 @@ public class NumberUtils {
 			return Long.toString (value);
 		}
 		else {
+			return "";
+		}
+	}
+
+	/**
+	 * Returns the string form of a Integer (the object). If the number is zero, returns "".
+	 * 
+	 * @param value
+	 * @return
+	 */
+	public static String toStringNoZero (Integer value) {
+		
+		if (value != null && value.intValue() != 0) {
+			
+			return value.toString();
+		}
+		else {
+		
 			return "";
 		}
 	}

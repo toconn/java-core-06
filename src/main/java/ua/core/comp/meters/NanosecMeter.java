@@ -1,33 +1,37 @@
-package ua.core.comp.metrics;
-
-import java.text.DecimalFormat;
+package ua.core.comp.meters;
 
 import ua.core.utils.TimeByUnits;
 
-public class RunMetrics {
+import static ua.core.utils.DataUtils.*;
+import static ua.core.utils.NumberUtils.*;
+
+public class NanosecMeter {
 	
 	// Constants ///////////////////////////////////////////////////////////////
 	
 	enum StartStopStatus {NONE, STARTED, STOPPED}
 	
-	private static final DecimalFormat COMMA_SEPARATED_DECIMAL_FORMAT	= new DecimalFormat ("#,###,###,###,###,##0.0");
-	private static final DecimalFormat COMMA_SEPARATED_INTEGER_FORMAT	= new DecimalFormat ("#,###,###,###,###,##0");
-
 	
 	// Class Proper ////////////////////////////////////////////////////////////
 	
 	private StartStopStatus status = null;
-	private long count = 0l;				// Counts the number of operations
+	private long count = 0l;					// Counts the number of operations
 	private long memoryUsedStart = 0l;		// Memory use at the start
-	private long memoryUsedEnd = 0l;		// Memory use at the end
-	private long timeStartMillisec = 0l;	// Time at the start
-	private long timeEndMillisec = 0l;		// Time at the end
+	private long memoryUsedEnd = 0l;			// Memory use at the end
+	private long timeStartNanosec = 0l;		// Time at the start
+	private long timeEndNanosec = 0l;		// Time at the end
 
-	public RunMetrics() {
+	
+	public NanosecMeter() {
 		start();
 	}
-
+	
 	public long getElapsedTimeMillisec() {
+		
+		return getElapsedTimeNanosec() / 1000000;
+	}
+
+	public long getElapsedTimeNanosec() {
 
 		long elapsed;
 		
@@ -35,11 +39,11 @@ public class RunMetrics {
 			
 			case STARTED:
 				
-				elapsed = (System.currentTimeMillis() - timeStartMillisec);
+				elapsed = (System.nanoTime() - timeStartNanosec);
 				break;
 				
 			case STOPPED:
-				elapsed = (timeEndMillisec - timeStartMillisec);
+				elapsed = (timeEndNanosec - timeStartNanosec);
 				break;
 				
 			default:
@@ -53,10 +57,10 @@ public class RunMetrics {
 
 	public float getElapsedTimeSec() {
 
-		return getElapsedTimeMillisec() / 1000f;
+		return getElapsedTimeNanosec() / 1000000000f;
 	}
 
-	public String getFormattedElapsedTime () {
+	public String getFormattedElapsedTime() {
 
 		TimeByUnits time;
 		
@@ -66,27 +70,27 @@ public class RunMetrics {
 
 	public String getFormattedMemoryUsed() {
 
-		return COMMA_SEPARATED_INTEGER_FORMAT.format (getMemoryUsed());
+		return toStringCommaSeparatedInt (getMemoryUsed());
 	}
 
 	public String getFormattedMemoryUsedKilobytes() {
 
-		return COMMA_SEPARATED_DECIMAL_FORMAT.format (getMemoryUsed() / 1024.0f) + " kb";
+		return formatMemoryKilobytesDecimalOne (getMemoryUsed());
 	}
 
 	public String getFormattedMemoryUsedMegabytes() {
 
-		return COMMA_SEPARATED_DECIMAL_FORMAT.format (getMemoryUsed() / 1048576.0f) + " mb";
+		return formatMemoryMegabytesDecimalOne (getMemoryUsed());
 	}
 
 	public String getFormattedOperationsCount() {
 
-		return COMMA_SEPARATED_INTEGER_FORMAT.format (getOperationsCount());
+		return toStringCommaSeparatedInt (getOperationsCount());
 	}
 
 	public String getFormattedOperationsPerSec() {
 
-		return COMMA_SEPARATED_DECIMAL_FORMAT.format (getOperationsPerSec());
+		return toStringCommaSeparatedDecimalOne (getOperationsPerSec());
 	}
 
 	public long getMemoryUsed() {
@@ -148,12 +152,12 @@ public class RunMetrics {
 		
 		this.count = 0;
 		this.memoryUsedStart = getMemoryInUse();
-		this.timeStartMillisec = System.currentTimeMillis();
+		this.timeStartNanosec = System.nanoTime();
 	}
 
 	public void stop() {
 
-		this.timeEndMillisec = System.currentTimeMillis();
+		this.timeEndNanosec = System.nanoTime();
 		this.memoryUsedEnd = getMemoryInUse();
 		
 		this.status = StartStopStatus.STOPPED;
