@@ -7,6 +7,7 @@ import java.time.LocalDateTime;
 import java.time.LocalTime;
 import java.util.Collection;
 import java.util.Date;
+import java.util.Map;
 
 import javax.xml.transform.OutputKeys;
 import javax.xml.transform.Source;
@@ -16,28 +17,35 @@ import javax.xml.transform.stream.StreamResult;
 import javax.xml.transform.stream.StreamSource;
 
 import ua.core.utils.CollectionUtils;
+import ua.core.utils.DataUtils;
 import ua.core.utils.Date2Utils;
 import ua.core.utils.DateUtils;
 import ua.core.utils.StringUtils;
 
 public class ConsoleUtils {
 
-	private static int		COLUMN_2_START_POSITION	= 24;
-	private static String	BORDER_CHARACTER	= "*";
-	public static int 		INDENT_SPACE_COUNT	= 4;
+	public static final int 		INDENT_SPACE_COUNT			= 4;
 
+	private static final int		DEFAULT_COLUMN_1_WIDTH		= 24;
+	private static final String	DEFAULT_COLUMN_SEPARATER		= ": ";
+	private static final String	BORDER_CHARACTER				= "*";
+
+	private static int			column1Width					= DEFAULT_COLUMN_1_WIDTH;
+	private static String		columnSeparater				= DEFAULT_COLUMN_SEPARATER;
 	
-	public static int getTextPaddingSize () {
-		return COLUMN_2_START_POSITION;
+	public static int getColumn1Width() {
+		return column1Width;
+	}
+	
+	public static String getColumnSeparater() {
+		return columnSeparater;
 	}
 	
 	public static void print () {
-
 		print ("");
 	}
 	
 	public static void print (Throwable e) {
-
 		print (e, null);
 	}
 	
@@ -74,82 +82,70 @@ public class ConsoleUtils {
 	}
 
 	public static void print (Object obj) {
-
 		System.out.println (obj);
 	}
 	
 	public static void print (Collection <String> texts) {
-		
 		print (StringUtils.join (texts, ", "));
 	}
 
 	public static void print (String text) {
-
 		System.out.println (text);
 	}
 
 	public static void print (String text1, boolean boolValue) {
-
 		print (text1, Boolean.toString (boolValue));
 	}
 	
 	public static void print (String text1, Collection <String> texts) {
-		
 		print (text1, StringUtils.join (texts, ", "));
 	}
 
 	public static void print (String text1, Date date) {
-
 		print (text1, DateUtils.toTimestampString (date));
 	}
 
 	public static void print (String text1, double number) {
-
 		print (text1, Double.toString (number));
 	}
 
 	public static void print (String text1, Throwable e) {
-		
 		print (e, text1);
 	}
 
 	public static void print (String text1, float number) {
-
 		print (text1, Float.toString (number));
 	}
 
 	public static void print (String text1, int number) {
-
 		print (text1, Integer.toString (number));
 	}
 
 	public static void print (String text1, LocalDate date) {
-
 		print (text1, Date2Utils.toTimestampString (date));
 	}
 
 	public static void print (String text1, LocalDateTime dateTime) {
-
 		print (text1, Date2Utils.toTimestampString (dateTime));
 	}
 
 	public static void print (String text1, LocalTime time) {
-
 		print (text1, Date2Utils.toTimestampString (time));
 	}
 
 	public static void print (String text1, long number) {
-
 		print (text1, Long.toString (number));
+	}
+	
+	public static void print (String text, Object value) {
+		print (text, value.toString());
 	}
 
 	public static void print (String text1, String text2) {
-
-		print (padString (text1, " ", getTextPaddingSize ()) + ": " + text2);
+		print (padString (text1, " ", getColumn1Width()) + getColumnSeparater() + text2);
 	}
 	
 	public static void print (String className, String methodName, String comment, Throwable e) {
-		
 		print (e, className, methodName, comment);
 	}
 	
@@ -164,7 +160,6 @@ public class ConsoleUtils {
 	}
 	
 	public static void printDone() {
-		
 		print ();
 		print ("Done.");
 		print ();
@@ -181,121 +176,101 @@ public class ConsoleUtils {
 	}
 
 	public static void printDouble () {
-		
 		print ();
 		print ();
 	}
 
 	public static void printDouble (Throwable e) {
-
-		printDouble (e);		
+		print (e);		
 		print ();
 	}
 	
 	public static void printDouble (Throwable e, String description) {
-
-		printDouble (e, description);	
+		print (e, description);	
 		print ();
 	}
 
 	public static void printDouble (Throwable e, String className, String methodName, String comment) {
-
-		printDouble (e, className, methodName, comment);
+		print (e, className, methodName, comment);
 		print ();
 	}
 
 	public static void printDouble (Collection <String> texts) {
-		
 		print (texts);
 		print ();
 	}
 
 	public static void printDouble (String text) {
-		
 		print (text);
 		print ();
 	}
 
 	public static void printDouble (String text1, boolean boolValue) {
-		
 		print (text1, boolValue);
 		print ();
 	}
 	
 	public static void printDouble (String text1, Collection <String> texts) {
-		
 		print (text1, texts);
 		print ();
 	}
 
 	public static void printDouble (String text1, Date date) {
-		
 		print (text1, date);
 		print ();
 	}
 	
 	public static void printDouble (String text1, Double number) {
-		
 		print (text1, number);
 		print ();
 	}
 	
 	public static void printDouble (String text1, Throwable e) {
-		
 		print (e, text1);
 		print ();
 	}
 
 	public static void printDouble (String text1, float number) {
-		
 		print (text1, number);
 		print ();
 	}
 	
 	public static void printDouble (String text1, int number) {
-		
 		print (text1, number);
 		print ();
 	}
 	
 	public static void printDouble (String text1, LocalDate date) {
-		
 		print (text1, date);
 		print ();
 	}
 	
 	public static void printDouble (String text1, LocalDateTime dateTime) {
-		
 		print (text1, dateTime);
 		print ();
 	}
 	
 	public static void printDouble (String text1, LocalTime time) {
-		
 		print (text1, time);
 		print ();
 	}
 	
 	public static void printDouble (String text1, long number) {
-		
 		print (text1, number);
 		print ();
 	}
 	
 	public static void printDouble (String text1, String text2) {
-		
 		print (text1, text2);
 		print ();
 	}
 	
 	public static void printDouble (String className, String methodName, String comment, Throwable e) {
-		
 		print (e, className, methodName, comment);
 		print ();
 	}
 
 	public static void printDoubleSorted (String text1, Collection <String> texts) {
-		
 		printSorted (text1, texts);
 		print ();
 	}
@@ -311,25 +286,106 @@ public class ConsoleUtils {
 	}
 	
 	public static void printHeader (String headerText) {
-		
 		printSectionHeader (headerText);
 	}
 
 	
+	public static void printIndent (int indentCount, Object value) {
+		print (indent (indentCount, value.toString()));
+	}
+
 	public static void printIndent (int indentCount, String text) {
-		
 		print (indent (indentCount, text));
 	}
 
+	public static void printIndent (int indentCount, String text, Object value) {
+		print (indent (indentCount, text), value);
+	}
+
 	public static void printIndent (int indentCount, String text1, String text2) {
-		
 		print (indent (indentCount, text1), text2);
 	}
 
-
 	public static void printInline (String text) {
-		
 		System.out.print (text);
+	}
+	
+	public static void printObject (int indent, Map<String, Object> map) {
+		printObject (indent, "", map);
+	}
+	
+	public static void printObject (int indent, Collection<Object> collection) {
+		printObject (indent, "", collection);
+	}
+	
+	public static void printObject (int indent, Object value) {
+		printObject (indent, "", value);
+	}
+	
+	public static void printObject (int indent, String lead, Collection<Object> collection) {
+		
+		printIndent (indent, lead + "Collection", formattedClassName (collection));
+		
+		indent++;
+		
+		for (Object value : collection) {
+			
+			if (value == null) {
+				printIndent (indent, "[null]");
+			}
+			else if (DataUtils.isValueObject (value)) {
+				printIndent (indent, value.toString(), formattedClassName (value));
+			}
+			else {
+				printObject (indent, value);
+			}
+
+		}
+	}
+
+	public static void printObject (int indent, String lead, Map<String, Object> map) {
+		
+		Object value;
+		
+		printIndent (indent, lead + "Map", formattedClassName (map));
+		
+		indent++;
+		
+		for (String key : map.keySet()) {
+			
+			value = map.get (key);
+			
+			if (value == null) {
+				printIndent (indent, key + " = " + "[null]");
+			}
+			else if (DataUtils.isValueObject (value)) {
+				printIndent (indent, key + " = " + value.toString(), formattedClassName (value));
+			}
+			else {
+				printObject (indent, key + " = ", value);
+			}
+
+		}
+	}
+
+	@SuppressWarnings ({ "unchecked"})
+	public static void printObject (int indent, String lead, Object value) {
+				
+		indent++;
+		
+		if (value == null) {
+			printIndent (indent, "[null]");
+		}
+		if (value instanceof Map) {
+			printObject (indent, lead, (Map<String, Object>) value);
+		}
+		else if (value instanceof Collection) {
+			printObject (indent, lead, (Collection<Object>) value);
+		}
+		else {
+			printIndent (indent, lead + value.toString());
+		}
+
 	}
 	
 	public static void printSectionHeader (String headerText) {
@@ -395,9 +451,20 @@ public class ConsoleUtils {
 	    }
 	}
 
-	public static void setTextPaddingSize (int textPaddingSize) {
-		
-		COLUMN_2_START_POSITION = textPaddingSize;
+	public static void resetColumn1Width() {
+		ConsoleUtils.column1Width = DEFAULT_COLUMN_1_WIDTH;
+	}
+	
+	public static void resetColumnSeparater() {
+		ConsoleUtils.columnSeparater = DEFAULT_COLUMN_SEPARATER;
+	}
+	
+	public static void setColumn1Width (int column1Width) {
+		ConsoleUtils.column1Width = column1Width;
+	}
+	
+	public static void setColumnSeparater (String columnSeparater) {
+		ConsoleUtils.columnSeparater = columnSeparater;
 	}
 	
 	public static void sleep (int seepTimeMs) {
@@ -495,5 +562,9 @@ public class ConsoleUtils {
 			
 			return expandString (fillText, totalLength);
 		}
+	}
+	
+	private static String formattedClassName (Object value) {
+		return  "[" + value.getClass().getSimpleName() +"]";
 	}
 }
