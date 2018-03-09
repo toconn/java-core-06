@@ -371,8 +371,6 @@ public class ConsoleUtils {
 	@SuppressWarnings ({ "unchecked"})
 	public static void printObject (int indent, String lead, Object value) {
 				
-		indent++;
-		
 		if (value == null) {
 			printIndent (indent, "[null]");
 		}
