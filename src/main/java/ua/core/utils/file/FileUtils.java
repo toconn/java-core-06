@@ -255,20 +255,12 @@ public class FileUtils {
      * @return
      * @throws ExceptionRuntime
      */
-    public static String findFilePathInClassPath (String fileName) throws ExceptionRuntime {
-
-		// ////////////////////////////////////////////////////////////////////////////////////
-		// Declarations:
-		// ////////////////////////////////////////////////////////////////////////////////////
+    public static String findFileInClassPath (String fileName) throws ExceptionRuntime {
 
 		NameValuePair dummyClass = null; // Used to get class loader.
-
 		URL fileURL = null;
 		String filePath = null;
 
-		// ////////////////////////////////////////////////////////////////////////////////////
-		// Code:
-		// ////////////////////////////////////////////////////////////////////////////////////
 
 		if (fileName != null) {
 
@@ -646,17 +638,17 @@ public class FileUtils {
 		Files.move (Paths.get (sourcePath), Paths.get(targetPath));
 	}
 	
-	public static String readToText (File file) throws FileNotFoundException {
+	public static String readToString (File file) throws FileNotFoundException {
 
 		if (file.length() > 0) {
-			return readToText (file.getAbsolutePath());
+			return readToString (file.getAbsolutePath());
 		}
 		else {
 			return "";
 		}
 	}
 	
-	public static String readToText (String filePath) throws FileNotFoundException {
+	public static String readToString (String filePath) throws FileNotFoundException {
 		
 		String text = "";
 		
